@@ -15,6 +15,7 @@ namespace GeoGuessr.Main
         [SerializeField] LevelPresenter _levelPresenter;
         [SerializeField] LevelWindow _levelWindow;
         [SerializeField] Camera _camera;
+        [SerializeField] FollowCamera _followCamera;
 
         private LevelController _levelController;
         protected override void Init()
@@ -27,7 +28,7 @@ namespace GeoGuessr.Main
                 .DeserializeObject<BoardJsonConfiguration>(_boardConfig.text)
                 .ToBoardDefinition();
 
-            var viewPort = new LevelViewAdapter(_levelWindow, _levelPresenter);
+            var viewPort = new LevelViewAdapter(_levelWindow, _levelPresenter, _followCamera);
 
             _levelController = new LevelController(boardDefinition, viewPort);
 

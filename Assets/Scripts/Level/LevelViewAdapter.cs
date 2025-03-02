@@ -10,23 +10,29 @@ namespace GeoGuessr.Main
     {
         private readonly LevelWindow _levelWindow;
         private readonly LevelPresenter _levelPresenter;
+        private readonly FollowCamera _followCamera;
 
-        public LevelViewAdapter(LevelWindow levelWindow, LevelPresenter levelPresenter)
+        public LevelViewAdapter(LevelWindow levelWindow, LevelPresenter levelPresenter, FollowCamera followCamera)
         {
             _levelWindow = levelWindow;
             _levelPresenter = levelPresenter;
+            _followCamera = followCamera;
         }
 
         public async UniTask MovePlayer(Player player, IReadOnlyList<BoardTile> path)
         {
-            await _levelWindow.SetupPlayerMovement(player, path);
             var playerPresenter = _levelPresenter.GetPlayerPresenter(player);
+
+            _followCamera.SetTarget(playerPresenter.transform);
+            await _levelWindow.SetupPlayerMovement(player, path);
 
             foreach (var tile in path)
             {
                 var tilePresenter = _levelPresenter.BoardPresenter.GetTilePresenter(tile);
                 await playerPresenter.MoveTo(tilePresenter);
             }
+
+            _followCamera.ClearTarget();
         }
 
         public UniTask StartTurn(Player player)
