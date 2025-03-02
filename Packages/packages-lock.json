@@ -1,5 +1,116 @@
 {
   "dependencies": {
+    "com.arman.component-management": {
+      "version": "file:ComponentSystem",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.arman.foundation.asset-providing": {
+      "version": "file:Asset Providing",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.arman.foundation.service_locating": "0.1.0"
+      }
+    },
+    "com.arman.foundation.configuration_management": {
+      "version": "file:ConfigurationManagement",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.arman.foundation.event_management": {
+      "version": "file:EventManagement",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.arman.foundation.service_locating": "0.1.0"
+      }
+    },
+    "com.arman.foundation.package_basics": {
+      "version": "file:PackageBasics",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.arman.foundation.persistent_data_managemement": {
+      "version": "file:PersistentDataManagement",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.arman.foundation.package_basics": "0.1.0",
+        "com.arman.foundation.service_locating": "0.1.0"
+      }
+    },
+    "com.arman.foundation.scene-management": {
+      "version": "file:Scene Management",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.arman.foundation.service_locating": "0.1.0"
+      }
+    },
+    "com.arman.foundation.service_locating": {
+      "version": "file:ServiceLocating",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.arman.http-connection": {
+      "version": "file:HttpConnection",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.arman.foundation.service_locating": "0.1.0"
+      }
+    },
+    "com.arman.in-game-message-logging": {
+      "version": "file:InGameMessageLogging",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.arman.foundation.service_locating": "0.1.0",
+        "com.arman.unity_utilities": "0.1.0"
+      }
+    },
+    "com.arman.object-pooling": {
+      "version": "file:ObjectPooling",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.arman.presentation.ui-management": {
+      "version": "file:UI Management",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.arman.foundation.service_locating": "0.1.0"
+      }
+    },
+    "com.arman.shop-management": {
+      "version": "file:ShopManagement",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.arman.foundation.service_locating": "0.1.0"
+      }
+    },
+    "com.arman.unity_utilities": {
+      "version": "file:UnityUtilities",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.arman.update-management": {
+      "version": "file:UpdateManagement",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.arman.foundation.service_locating": "0.1.0",
+        "com.arman.foundation.package_basics": "0.1.0"
+      }
+    },
     "com.unity.burst": {
       "version": "1.8.12",
       "depth": 1,
@@ -52,6 +163,13 @@
     "com.unity.mathematics": {
       "version": "1.2.6",
       "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "3.2.1",
+      "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"

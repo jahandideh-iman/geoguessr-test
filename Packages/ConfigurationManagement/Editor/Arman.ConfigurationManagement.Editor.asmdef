@@ -1,0 +1,16 @@
+{
+    "name": "Arman.ConfigurationManagement.Editor",
+    "references": [
+        "GUID:290bd8942510c634d8f8b8c36291d4f6"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
