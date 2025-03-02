@@ -20,6 +20,8 @@ namespace BalloonPop
         {
             ServiceLocator.Init();
             ServiceLocator.Register(new SceneManager());
+
+            uiManager.Init();
             ServiceLocator.Register(uiManager);
 
             foreach (GameObject obj in objectsToKeepAlive)

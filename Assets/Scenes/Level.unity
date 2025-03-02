@@ -482,6 +482,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _boardConfig: {fileID: 4900000, guid: 7461d233759b23f4985ed0d68310df3a, type: 3}
+  _flagQuizesConfig: {fileID: 4900000, guid: 66588a69ef43e4ed288f156ecfd7e532, type: 3}
+  _questionQuizesConfig: {fileID: 4900000, guid: 952f70ada48f2445494217015362263b,
+    type: 3}
   _levelPresenter: {fileID: 334873370}
   _levelWindow: {fileID: 408159249}
   _camera: {fileID: 330585545}
@@ -662,8 +665,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2cc3ede7c7f2c943ada8a8abab7ed05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tilePresenterPrefab: {fileID: 5301493101207417592, guid: e86a64a168547422db6122e2668271de,
+  _emptyTilePresenterPrefab: {fileID: 7785784808250429866, guid: 032caff3f34999d44a404dbabbeb4fad,
     type: 3}
+  _quizTilePresenterPrefabs:
+  - Key: 0
+    Value: {fileID: 3446690984424687748, guid: 36384266267d516478add8c957720b4e, type: 3}
+  - Key: 1
+    Value: {fileID: 3446690984424687748, guid: 57f8e1c1c55f7704e84e752468cd39db, type: 3}
 --- !u!1001 &5152446221303807193
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -749,6 +757,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LevelWindow
+      objectReference: {fileID: 0}
+    - target: {fileID: 6417354159940229440, guid: 41e4083c8e054d04facc826568dfe342,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 330585545}
+    - target: {fileID: 6417354159940229440, guid: 41e4083c8e054d04facc826568dfe342,
+        type: 3}
+      propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6417354159940229440, guid: 41e4083c8e054d04facc826568dfe342,
+        type: 3}
+      propertyPath: m_PlaneDistance
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8183565088265125994, guid: 41e4083c8e054d04facc826568dfe342,
         type: 3}

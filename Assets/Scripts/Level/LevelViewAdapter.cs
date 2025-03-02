@@ -4,15 +4,19 @@ using GeoGuessr.Presentation;
 using System;
 using System.Collections.Generic;
 
-namespace GeoGuessr.Main
+namespace GeoGuessr.Presentation
 {
+
     public class LevelViewAdapter : ILevelViewPort
     {
         private readonly LevelWindow _levelWindow;
         private readonly LevelPresenter _levelPresenter;
         private readonly FollowCamera _followCamera;
 
-        public LevelViewAdapter(LevelWindow levelWindow, LevelPresenter levelPresenter, FollowCamera followCamera)
+        public LevelViewAdapter(
+            LevelWindow levelWindow, 
+            LevelPresenter levelPresenter,
+            FollowCamera followCamera)
         {
             _levelWindow = levelWindow;
             _levelPresenter = levelPresenter;
@@ -33,6 +37,16 @@ namespace GeoGuessr.Main
             }
 
             _followCamera.ClearTarget();
+        }
+
+        public UniTask<Choice> ShowQuiz(Quiz quiz)
+        {
+            return _levelWindow.ShowQuizPopup(quiz);
+        }
+
+        public UniTask ShowQuizResult(Quiz quiz, bool answerWasCorrect)
+        {
+            return _levelWindow.ShowQuizResultPopup(quiz, answerWasCorrect);
         }
 
         public UniTask StartTurn(Player player)

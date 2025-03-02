@@ -3,36 +3,52 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace GeoGuessr.Configuration
 {
-    [JsonObject]
     public class BoardJsonConfiguration
     {
+
+        [JsonObject]
+        public struct Board
+        {
+            [JsonProperty] public List<int[]> tiles;
+            [JsonProperty] public int startingTileIndex;
+            [JsonProperty] public int[] questionQuizTiles;
+            [JsonProperty] public int[] flagQuizTiles;
+        }
+
         [JsonObject]
         public struct Tile
         {
             public int x; public int y;
         }
 
-        [JsonProperty]
-        private List<int[]> tiles;
-
-        [JsonProperty]
-        private int startingTileIndex;
-
-
-        public BoardDefinition ToBoardDefinition()
+        public static BoardDefinition Load(string boardJson)
         {
+            var boardConfig = JsonConvert.DeserializeObject<Board>(boardJson);
             var boardTiles = new List<BoardTile>();
-            for (int i = 0; i < tiles.Count; i++)
+
+            for (int i = 0; i < boardConfig.tiles.Count; i++)
             {
-                int[] tile = tiles[i];
-                boardTiles.Add(new BoardTile(tiles[i][0], tiles[i][1], i));
+                int[] tile = boardConfig.tiles[i];
+                boardTiles.Add(new BoardTile(tile[0], tile[1], i, QuizTypeForTile(boardConfig, i)));
             }
-            return new BoardDefinition(boardTiles, startingTileIndex);
+            return new BoardDefinition(boardTiles, boardConfig.startingTileIndex);
         }
 
+        private static QuizType? QuizTypeForTile(Board boardConfig, int i)
+        {
+            if(boardConfig.questionQuizTiles.Contains(i))
+            {
+                return QuizType.Question;
+            }
+            else if(boardConfig.flagQuizTiles.Contains(i))
+            {
+                return QuizType.Flag;
+            }
+
+            return null;
+        }
     }
 }

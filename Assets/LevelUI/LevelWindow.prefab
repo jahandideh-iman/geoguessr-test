@@ -220,6 +220,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _announcement: {fileID: 17289600882582021}
   _rollPanel: {fileID: 2187702041268614559}
+  _quizPopupPrefabs:
+  - Key: 0
+    Value: {fileID: 6655223332695248337, guid: 214cff3e9ca83ab408d9b760dd63a94b, type: 3}
+  - Key: 1
+    Value: {fileID: 383188351409878510, guid: e8efa85641fa20e45b51f5e05d11b17e, type: 3}
+  _quizResultPopupPrefabs:
+  - Key: 0
+    Value: {fileID: 4906252223374118860, guid: cb878f538610905498749c35faf7de5c, type: 3}
+  - Key: 1
+    Value: {fileID: 4906252223374118860, guid: 2d45b8b6f4a2ee2469c59da8169cf329, type: 3}
 --- !u!223 &6417354159940229440
 Canvas:
   m_ObjectHideFlags: 0
@@ -255,12 +265,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 2160, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
