@@ -1,4 +1,5 @@
 ﻿using GeoGuessr.Game;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,24 +7,31 @@ using UnityEngine;
 
 namespace GeoGuessr.Configuration
 {
-    [Serializable]
+    [JsonObject]
     public class BoardJsonConfiguration
     {
-        [Serializable]
+        [JsonObject]
         public struct Tile
         {
             public int x; public int y;
         }
 
-        [SerializeField]
-        public List<int[]> tiles;
+        [JsonProperty]
+        private List<int[]> tiles;
+
+        [JsonProperty]
+        private int startingTileIndex;
 
 
         public BoardDefinition ToBoardDefinition()
         {
-
-            return new BoardDefinition(tiles.Select(pos => new BoardTile(pos[0], pos[1])));
-
+            var boardTiles = new List<BoardTile>();
+            for (int i = 0; i < tiles.Count; i++)
+            {
+                int[] tile = tiles[i];
+                boardTiles.Add(new BoardTile(tiles[i][0], tiles[i][1], i));
+            }
+            return new BoardDefinition(boardTiles, startingTileIndex);
         }
 
     }

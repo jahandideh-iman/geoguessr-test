@@ -2,13 +2,16 @@
 {
     public class BoardTile
     {
-        public BoardTile(int x, int y)
-        {
-            X = x;
-            Y = y;
-        }
+        public Position Position { get; }
+        public int Index { get; }
+        public int X => Position.x;
+        public int Y => Position.y;
 
-        public int X { get; }
-        public int Y { get; }
+
+        public BoardTile(int x, int y, int index)
+        {
+            Position = new Position { x = x, y =y };
+            Index = index;
+        }
     }
 }

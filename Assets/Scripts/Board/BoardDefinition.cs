@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GeoGuessr.Game
@@ -7,9 +8,12 @@ namespace GeoGuessr.Game
     {
         public BoardTile[] BoardTiles { get; }
 
-        public BoardDefinition(IEnumerable<BoardTile> boardTiles)
+        public int StartingTileIndex { get; }
+
+        public BoardDefinition(IEnumerable<BoardTile> boardTiles, int startingTileIndex)
         {
             BoardTiles = boardTiles.ToArray();
+            StartingTileIndex = startingTileIndex;
         }
     }
 }
