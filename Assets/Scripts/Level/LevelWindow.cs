@@ -24,10 +24,15 @@ namespace GeoGuessr.Presentation
             await _announcement.Announce($"Player {player.Index+1} turn");
         }
 
-        internal async UniTask SetupPlayerMovement(Player player, IReadOnlyList<BoardTile> path)
+        public async UniTask SetupPlayerMovement(Player player, IReadOnlyList<BoardTile> path)
         {
             _rollPanel.MoveOut();
             await _announcement.Announce($"Player {player.Index+1} roll {path.Count}");
+        }
+
+        public UniTask<int> ShowQuizPopup(Quiz quiz)
+        {
+            throw new NotImplementedException();
         }
     }
 }

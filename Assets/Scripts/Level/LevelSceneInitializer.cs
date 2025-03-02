@@ -12,6 +12,8 @@ namespace GeoGuessr.Main
     public class LevelSceneInitializer : SceneInitilizer
     {
         [SerializeField] TextAsset _boardConfig;
+        [SerializeField] TextAsset _flagQuizesConfig;
+        [SerializeField] TextAsset _questionQuizesConfig;
         [SerializeField] LevelPresenter _levelPresenter;
         [SerializeField] LevelWindow _levelWindow;
         [SerializeField] Camera _camera;
@@ -24,13 +26,12 @@ namespace GeoGuessr.Main
             uiManager.SetMainCamera(_camera);
             uiManager.SetMainWindow(_levelWindow);
 
-            var boardDefinition = JsonConvert
-                .DeserializeObject<BoardJsonConfiguration>(_boardConfig.text)
-                .ToBoardDefinition();
+            var boardDefinition = BoardJsonConfiguration.Load(_boardConfig.text);
+            var quizDatabase = QuizDatabaseJsonConfiguration.Load(_flagQuizesConfig.text, _questionQuizesConfig.text);
 
             var viewPort = new LevelViewAdapter(_levelWindow, _levelPresenter, _followCamera);
 
-            _levelController = new LevelController(boardDefinition, viewPort);
+            _levelController = new LevelController(boardDefinition, quizDatabase, viewPort);
 
             _levelPresenter.Setup(_levelController);
             _levelWindow.Setup(_levelController);
