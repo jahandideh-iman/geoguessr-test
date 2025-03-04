@@ -17,7 +17,10 @@ namespace GeoGuessr.Presentation
 
         private Dictionary<QuizType, QuizPopup> _quizPopupsPrefabsMap;
         private Dictionary<QuizType, QuizResultPopup> _quizResultPopupsPrefabsMap;
-        internal void Setup(LevelController levelController)
+
+        private QuizPopup? _currentQuizPopup = null;
+
+        public void Setup(LevelController levelController)
         {
             _quizPopupsPrefabsMap = _quizPopupPrefabs.ToDictionary();
             _quizResultPopupsPrefabsMap = _quizResultPopupPrefabs.ToDictionary();
@@ -38,16 +41,19 @@ namespace GeoGuessr.Presentation
             await _announcement.Announce($"Player {player.Index+1} roll {path.Count}");
         }
 
-        public async UniTask<Choice> ShowQuizPopup(Quiz quiz)
+        public async UniTask<Choice> ShowQuizPopup(Quiz quiz, DateTime endTime)
         {
             var prefab = _quizPopupsPrefabsMap[quiz.Type];
 
             Choice? selectedChoice = null;
-            var popup = Instantiate(prefab, uiManager.MainTransform());
-            popup.Setup(quiz, onChoiceSelected: choice => selectedChoice = choice);
-            uiManager.OpenPopUp(popup);
+            _currentQuizPopup = Instantiate(prefab, uiManager.MainTransform());
+            _currentQuizPopup.Setup(quiz, endTime, onChoiceSelected: choice => selectedChoice = choice);
+            uiManager.OpenPopUp(_currentQuizPopup);
 
             await UniTask.WaitUntil(() => selectedChoice != null);
+
+            _currentQuizPopup.Close();
+
 
             return selectedChoice;
         }
@@ -61,6 +67,14 @@ namespace GeoGuessr.Presentation
             uiManager.OpenPopUp(popup);
 
             await UniTask.WaitUntil(() => resultClosed);
+        }
+
+        public void CloseQuizPopup()
+        {
+            if(_currentQuizPopup !=null)
+            {
+                _currentQuizPopup.Close();
+            }
         }
     }
 }

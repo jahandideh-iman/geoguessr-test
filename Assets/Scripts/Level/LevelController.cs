@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -14,8 +15,9 @@ namespace GeoGuessr.Game
     {
         UniTask StartTurn(Player player);
         UniTask MovePlayer(Player player, IReadOnlyList<BoardTile> path);
-        UniTask<Choice> ShowQuiz(Quiz quiz);
+        UniTask<Choice> ShowQuiz(Quiz quiz, DateTime endTime);
         UniTask ShowQuizResult(Quiz quiz, bool answerWasCorrect);
+        void CloseQuiz();
     }
 
     public class QuizDatabase
@@ -24,11 +26,11 @@ namespace GeoGuessr.Game
 
         public QuizDatabase()
         {
-            foreach(var quizType in Enum.GetValues(typeof(QuizType)).Cast<QuizType>())
+            foreach (var quizType in Enum.GetValues(typeof(QuizType)).Cast<QuizType>())
             {
                 quizesByType[quizType] = new List<Quiz>();
             }
-            
+
         }
 
         public void AddQuiz(Quiz quiz)
@@ -65,6 +67,8 @@ namespace GeoGuessr.Game
 
     public class LevelController
     {
+        private readonly static TimeSpan QuizDuration = TimeSpan.FromSeconds(10);
+
         enum LevelState
         {
             Idle,
@@ -126,23 +130,44 @@ namespace GeoGuessr.Game
         {
             var quizes = QuizDatabase.QuizesOfType(quizType);
             var quiz = quizes.RandomElement();
+            var endTime = DateTime.UtcNow + QuizDuration;
 
-            var choice = await ViewPort.ShowQuiz(quiz);
+            var cancelationSource = new CancellationTokenSource();
+            var timeoutTask = UniTask
+                .WaitUntil(() => DateTime.UtcNow >= endTime)
+                .AttachExternalCancellation(cancelationSource.Token);
+            var quizTask = ViewPort.ShowQuiz(quiz, endTime)
+                .AttachExternalCancellation(cancelationSource.Token)
+                .Preserve();
 
-            var answerWasCorrect = choice == quiz.Answer;
+            await UniTask.WhenAny(timeoutTask, quizTask);
 
-            if (answerWasCorrect)
+            cancelationSource.Cancel();
+
+            if (quizTask.Status == UniTaskStatus.Succeeded)
             {
-                CurrentPlayer.AddScore(1);
+                var choice = await quizTask;
+                var answerWasCorrect = choice == quiz.Answer;
+
+                if (answerWasCorrect)
+                {
+                    CurrentPlayer.AddScore(1);
+                }
+
+                await ViewPort.ShowQuizResult(quiz, answerWasCorrect);
+            }
+            else // Quiz time is over
+            {
+                ViewPort.CloseQuiz();
+                await ViewPort.ShowQuizResult(quiz, false);
             }
 
-            await ViewPort.ShowQuizResult(quiz, answerWasCorrect);
         }
 
         private async void StartNextPlayerTurn()
         {
             CurrentState = LevelState.Idle;
-            CurrentPlayer = Players[(CurrentPlayer.Index + 1 )% Players.Length];
+            CurrentPlayer = Players[(CurrentPlayer.Index + 1) % Players.Length];
             await ViewPort.StartTurn(CurrentPlayer);
             GoToWaitingForRollState();
 

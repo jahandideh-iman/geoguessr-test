@@ -39,10 +39,16 @@ namespace GeoGuessr.Presentation
             _followCamera.ClearTarget();
         }
 
-        public UniTask<Choice> ShowQuiz(Quiz quiz)
+        public UniTask<Choice> ShowQuiz(Quiz quiz, DateTime endTime)
         {
-            return _levelWindow.ShowQuizPopup(quiz);
+            return _levelWindow.ShowQuizPopup(quiz, endTime);
         }
+
+        public void CloseQuiz()
+        {
+            _levelWindow.CloseQuizPopup();
+        }
+
 
         public UniTask ShowQuizResult(Quiz quiz, bool answerWasCorrect)
         {
