@@ -12,13 +12,15 @@ namespace GeoGuessr.Presentation
         [SerializeField] TextMeshProUGUI _resultText;
         [SerializeField] TextMeshProUGUI _answerText;
         [SerializeField] Image _answerImage;
+        [SerializeField] Button _closeButton;
 
-        Action _onClosed;
+        Action? _onClosed;
 
-        public void Setup(Quiz quiz, bool wasCorrectAnswer, Action onClosed)
+        public void Setup(Quiz quiz, bool wasCorrectAnswer, bool enableUserInput, Action? onClosed)
         {
             _onClosed = onClosed;
             _resultText.text = wasCorrectAnswer ? "Well Done!" : "You'll get it right next time!";
+            _closeButton.interactable = enableUserInput;
 
             _answerText.text = quiz.Answer.Text;
 
@@ -34,7 +36,7 @@ namespace GeoGuessr.Presentation
         protected override void InternalOnDestroy()
         {
             base.InternalOnDestroy();
-            _onClosed.Invoke();
+            _onClosed?.Invoke();
         }
 
     }

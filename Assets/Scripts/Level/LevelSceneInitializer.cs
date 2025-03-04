@@ -4,7 +4,6 @@ using Arman.UIManagement;
 using GeoGuessr.Configuration;
 using GeoGuessr.Game;
 using GeoGuessr.Presentation;
-using Newtonsoft.Json;
 using UnityEngine;
 
 namespace GeoGuessr.Main
@@ -29,9 +28,14 @@ namespace GeoGuessr.Main
             var boardDefinition = BoardJsonConfiguration.Load(_boardConfig.text);
             var quizDatabase = QuizDatabaseJsonConfiguration.Load(_flagQuizesConfig.text, _questionQuizesConfig.text);
 
-            var viewPort = new LevelViewAdapter(_levelWindow, _levelPresenter, _followCamera);
+            var viewAdapter = new LevelViewAdapter(_levelWindow, _levelPresenter, _followCamera);
 
-            _levelController = new LevelController(boardDefinition, quizDatabase, viewPort);
+            var levelMode = new LevelMode()
+                .SetBoard(boardDefinition)
+                .AddLocalPlayer("Player1")
+                .AddAiPlayer();
+
+            _levelController = levelMode.BuildLevelController(quizDatabase, viewAdapter, viewAdapter);
 
             _levelPresenter.Setup(_levelController);
             _levelWindow.Setup(_levelController);

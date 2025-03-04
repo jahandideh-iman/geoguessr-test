@@ -1,12 +1,10 @@
 
 using Cysharp.Threading.Tasks;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using UnityEngine;
 
 
 namespace GeoGuessr.Game
@@ -15,8 +13,6 @@ namespace GeoGuessr.Game
     {
         UniTask StartTurn(Player player);
         UniTask MovePlayer(Player player, IReadOnlyList<BoardTile> path);
-        UniTask<Choice> ShowQuiz(Quiz quiz, DateTime endTime);
-        UniTask ShowQuizResult(Quiz quiz, bool answerWasCorrect);
         void CloseQuiz();
     }
 
@@ -65,64 +61,105 @@ namespace GeoGuessr.Game
         Flag = 1,
     }
 
+    public class LevelMode
+    {
+        BoardDefinition? _boardDefinition;
+
+        List<string> _localPlayerNames = new();
+        List<string> _aiPlayerNames = new();
+
+        public LevelMode()
+        {
+        }
+
+        public LevelMode SetBoard(BoardDefinition boardDefinition)
+        {
+            _boardDefinition = boardDefinition;
+            return this;
+        }
+
+        public LevelMode AddLocalPlayer(string name)
+        {
+            _localPlayerNames.Add(name);
+            return this;
+        }
+
+        public LevelMode AddAiPlayer()
+        {
+            _aiPlayerNames.Add($"AiPlayer{_aiPlayerNames.Count}");
+            return this;
+        }
+
+        public LevelController BuildLevelController(
+            QuizDatabase quizDatabase,
+            ILevelViewPort levelViewPort,
+            IPlayerControllerViewPort playerViewPort)
+        {
+            UnityEngine.Debug.Assert(_boardDefinition != null, "No board is set for the level");
+            var players = _localPlayerNames
+                .Select(name => new Player(name, new LocalPlayerController(playerViewPort)))
+                .Concat(_aiPlayerNames.Select(name => new Player(name, new AIPlayerController(playerViewPort))));
+
+            return new LevelController(players, _boardDefinition, quizDatabase, levelViewPort);
+        }
+    }
+
     public class LevelController
     {
         private readonly static TimeSpan QuizDuration = TimeSpan.FromSeconds(10);
 
-        enum LevelState
-        {
-            Idle,
-            WaitingForRoll,
-            Moving,
-        }
-
         public Board Board { get; }
         public Player[] Players { get; }
+        public Player CurrentPlayer => Players[_currentPlayerIndex];
         private QuizDatabase QuizDatabase { get; }
         private ILevelViewPort ViewPort { get; }
+        private int _currentPlayerIndex = 0;
 
-        private LevelState CurrentState { get; set; }
-
-        public Player CurrentPlayer { get; set; }
-
-        public LevelController(BoardDefinition boardDefinition, QuizDatabase quizDatabase, ILevelViewPort viewPort)
+        public LevelController(
+            IEnumerable<Player> players, 
+            BoardDefinition boardDefinition, 
+            QuizDatabase quizDatabase, 
+            ILevelViewPort viewPort)
         {
-            Players = new Player[] { new Player(0) };
+            Players = players.ToArray();
             Board = new Board(boardDefinition, Players);
             QuizDatabase = quizDatabase;
             ViewPort = viewPort;
-
-            CurrentPlayer = Players[^1];
-            CurrentState = LevelState.Idle;
         }
 
         public void Start()
         {
-            StartNextPlayerTurn();
+            ExecuteCurrentPlayerTurn();
         }
 
-        public async void Roll()
+        public void GoToNextPlayerTurn()
         {
-            if (CurrentState != LevelState.WaitingForRoll)
+            _currentPlayerIndex = (_currentPlayerIndex + 1) % Players.Length;
+            ExecuteCurrentPlayerTurn();
+        }
+
+        private async void ExecuteCurrentPlayerTurn()
+        {
+            await ViewPort.StartTurn(CurrentPlayer);
+            var rollNumber = await CurrentPlayer.Controller.GetRoll();
+
+            await MovePlayer(rollNumber);
+
+            var playerTile = Board.GetPlayerTile(CurrentPlayer);
+            if (playerTile.QuizType != null)
             {
-                Debug.LogError("The level state is not accepting rolls");
-                return;
+                await PlayQuizGame(playerTile.QuizType.Value);
             }
 
-            CurrentState = LevelState.Moving;
+            GoToNextPlayerTurn();
+        }
 
-            var steps = UnityEngine.Random.Range(1, 7);
-            var path = Board.DeterminRollPath(steps, CurrentPlayer);
+        public async UniTask MovePlayer(int roll)
+        {
+            var path = Board.DeterminRollPath(roll, CurrentPlayer);
             var lastTile = path[^1];
             await ViewPort.MovePlayer(CurrentPlayer, path);
-            SetPlayerTile(CurrentPlayer, lastTile);
-
-            if (lastTile.QuizType != null)
-            {
-                await PlayQuizGame(lastTile.QuizType.Value);
-            }
-
-            StartNextPlayerTurn();
+            Board.SetPlayerTile(CurrentPlayer, lastTile);
 
         }
 
@@ -136,7 +173,7 @@ namespace GeoGuessr.Game
             var timeoutTask = UniTask
                 .WaitUntil(() => DateTime.UtcNow >= endTime)
                 .AttachExternalCancellation(cancelationSource.Token);
-            var quizTask = ViewPort.ShowQuiz(quiz, endTime)
+            var quizTask = CurrentPlayer.Controller.GetQuizAnswer(quiz, endTime)
                 .AttachExternalCancellation(cancelationSource.Token)
                 .Preserve();
 
@@ -154,33 +191,13 @@ namespace GeoGuessr.Game
                     CurrentPlayer.AddScore(1);
                 }
 
-                await ViewPort.ShowQuizResult(quiz, answerWasCorrect);
+                await CurrentPlayer.Controller.ShowQuizResult(quiz, answerWasCorrect);
             }
             else // Quiz time is over
             {
                 ViewPort.CloseQuiz();
-                await ViewPort.ShowQuizResult(quiz, false);
+                await CurrentPlayer.Controller.ShowQuizResult(quiz, false);
             }
-
-        }
-
-        private async void StartNextPlayerTurn()
-        {
-            CurrentState = LevelState.Idle;
-            CurrentPlayer = Players[(CurrentPlayer.Index + 1) % Players.Length];
-            await ViewPort.StartTurn(CurrentPlayer);
-            GoToWaitingForRollState();
-
-        }
-
-        private void SetPlayerTile(Player player, BoardTile tile)
-        {
-            Board.SetPlayerTile(player, tile);
-        }
-
-        private void GoToWaitingForRollState()
-        {
-            CurrentState = LevelState.WaitingForRoll;
         }
 
     }

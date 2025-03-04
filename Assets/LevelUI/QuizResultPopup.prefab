@@ -440,6 +440,7 @@ MonoBehaviour:
   _resultText: {fileID: 3357706017600547920}
   _answerText: {fileID: 7704836342554563016}
   _answerImage: {fileID: 2246067074128851622}
+  _closeButton: {fileID: 6299178016506248245}
 --- !u!223 &1406313894867610375
 Canvas:
   m_ObjectHideFlags: 0
@@ -775,7 +776,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 3725973671227193667}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:

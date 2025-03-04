@@ -9,14 +9,14 @@ namespace GeoGuessr.Presentation
     {
         [SerializeField] Button button;
 
-        Action _onRoll;
 
         Vector2 initialPosition;
         Vector2 outOfScreenPositionOffset = new Vector2 (200, -200);
 
-        public void Setup(Action onRoll)
+        Action? _onRoll;
+
+        public void Setup()
         {
-            _onRoll = onRoll;
             initialPosition = transform.localPosition;
             transform.localPosition = initialPosition + outOfScreenPositionOffset;
             button.interactable = false;
@@ -25,11 +25,13 @@ namespace GeoGuessr.Presentation
 
         public void OnRoll()
         {
-            _onRoll.Invoke();
+            _onRoll?.Invoke();
+            _onRoll = null;
         }
 
-        public void MoveIn()
+        public void MoveIn(Action onRoll)
         {
+            _onRoll = onRoll;
             button.interactable = true;
             transform.DOLocalMove(initialPosition, 0.5f);
         }

@@ -1,26 +1,35 @@
 ﻿using Cysharp.Threading.Tasks;
 using GeoGuessr.Game;
-using GeoGuessr.Presentation;
 using System;
 using System.Collections.Generic;
 
 namespace GeoGuessr.Presentation
 {
 
-    public class LevelViewAdapter : ILevelViewPort
+    public class LevelViewAdapter : ILevelViewPort, IPlayerControllerViewPort
     {
         private readonly LevelWindow _levelWindow;
         private readonly LevelPresenter _levelPresenter;
         private readonly FollowCamera _followCamera;
 
+        private QuizPopup? _currentQuizPopup = null;
+
         public LevelViewAdapter(
-            LevelWindow levelWindow, 
+            LevelWindow levelWindow,
             LevelPresenter levelPresenter,
             FollowCamera followCamera)
         {
             _levelWindow = levelWindow;
             _levelPresenter = levelPresenter;
             _followCamera = followCamera;
+        }
+        public async UniTask StartTurn(Player player)
+        {
+            var playerPresenter = _levelPresenter.GetPlayerPresenter(player);
+
+            _followCamera.SetTarget(playerPresenter.transform);
+            await _levelWindow.SetupPlayerTurn(player);
+            _followCamera.ClearTarget();
         }
 
         public async UniTask MovePlayer(Player player, IReadOnlyList<BoardTile> path)
@@ -39,25 +48,50 @@ namespace GeoGuessr.Presentation
             _followCamera.ClearTarget();
         }
 
-        public UniTask<Choice> ShowQuiz(Quiz quiz, DateTime endTime)
-        {
-            return _levelWindow.ShowQuizPopup(quiz, endTime);
-        }
 
         public void CloseQuiz()
         {
-            _levelWindow.CloseQuizPopup();
+            _currentQuizPopup.Close();
+            _currentQuizPopup = null;
         }
 
-
-        public UniTask ShowQuizResult(Quiz quiz, bool answerWasCorrect)
+        public async UniTask ShowRollingOption()
         {
-            return _levelWindow.ShowQuizResultPopup(quiz, answerWasCorrect);
+            bool playerRolled = false;
+            _levelWindow.ShowRollPanel(onRoll: () => playerRolled = true);
+
+            await UniTask.WaitUntil(() => playerRolled);
         }
 
-        public UniTask StartTurn(Player player)
+        public async UniTask ShowAiQuiz(Quiz quiz, DateTime endTime)
         {
-            return _levelWindow.SetupPlayerTurn(player);
+            _currentQuizPopup = _levelWindow.ShowQuizPopup(quiz, endTime, enableUserChoice: false, onChoiceSelected: null);
+            await UniTask.WaitForSeconds(2);
+            _currentQuizPopup?.Close();
+        }
+
+        public async UniTask ShowAiQuizResult(Quiz quiz, bool answerWasCorrect)
+        {
+            var popup = _levelWindow.ShowQuizResultPopup(quiz, answerWasCorrect, enableUserInput: false);
+            await UniTask.WaitForSeconds(2);
+            popup.Close();
+        }
+
+        public async UniTask<Choice> ShowPlayerQuiz(Quiz quiz, DateTime endTime)
+        {
+            Choice? selectedChoice = null;
+            _currentQuizPopup = _levelWindow.ShowQuizPopup(quiz, endTime, enableUserChoice: true, onChoiceSelected: choice => selectedChoice = choice);
+            await UniTask.WaitUntil(() => selectedChoice != null);
+            _currentQuizPopup?.Close();
+            return selectedChoice;
+        }
+
+        public async UniTask ShowPlayerQuizResult(Quiz quiz, bool answerWasCorrect)
+        {
+            bool resultIsClosed = false;
+            _levelWindow.ShowQuizResultPopup(quiz, answerWasCorrect, enableUserInput: true, onClosed: () => resultIsClosed = true);
+            await UniTask.WaitUntil(() => resultIsClosed);
+            return;
         }
     }
 }
