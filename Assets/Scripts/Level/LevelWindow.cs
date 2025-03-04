@@ -26,55 +26,56 @@ namespace GeoGuessr.Presentation
             _quizResultPopupsPrefabsMap = _quizResultPopupPrefabs.ToDictionary();
 
             _announcement.Setup();
-            _rollPanel.Setup(onRoll: levelController.Roll);
+            _rollPanel.Setup();
         }
 
         public async UniTask SetupPlayerTurn(Player player)
         {
-            _rollPanel.MoveIn();
-            await _announcement.Announce($"Player {player.Index+1} turn");
+            await _announcement.Announce($"{player.Name}'s turn");
         }
 
         public async UniTask SetupPlayerMovement(Player player, IReadOnlyList<BoardTile> path)
         {
             _rollPanel.MoveOut();
-            await _announcement.Announce($"Player {player.Index+1} roll {path.Count}");
+            await _announcement.Announce($"Player {player.Index + 1} roll {path.Count}");
         }
 
-        public async UniTask<Choice> ShowQuizPopup(Quiz quiz, DateTime endTime)
+        public void ShowQuizPopup(Quiz quiz, DateTime endTime, bool enableUserChoice, Action<Choice>? onChoiceSelected)
         {
             var prefab = _quizPopupsPrefabsMap[quiz.Type];
 
-            Choice? selectedChoice = null;
             _currentQuizPopup = Instantiate(prefab, uiManager.MainTransform());
-            _currentQuizPopup.Setup(quiz, endTime, onChoiceSelected: choice => selectedChoice = choice);
+            _currentQuizPopup.Setup(quiz, endTime, enableUserChoice,
+                onChoiceSelected: choice =>
+                {
+
+                    onChoiceSelected?.Invoke(choice);
+                    _currentQuizPopup.Close();
+                });
             uiManager.OpenPopUp(_currentQuizPopup);
 
-            await UniTask.WaitUntil(() => selectedChoice != null);
 
-            _currentQuizPopup.Close();
-
-
-            return selectedChoice;
         }
 
-        public async UniTask ShowQuizResultPopup(Quiz quiz, bool answerWasCorrect)
+        public void ShowQuizResultPopup(Quiz quiz, bool answerWasCorrect, Action onClosed)
         {
             var prefab = _quizResultPopupsPrefabsMap[quiz.Type];
             var popup = Instantiate(prefab, uiManager.MainTransform());
-            bool resultClosed = false;
-            popup.Setup(quiz, answerWasCorrect, onClosed: () => resultClosed = true);
+            popup.Setup(quiz, answerWasCorrect, onClosed: onClosed);
             uiManager.OpenPopUp(popup);
-
-            await UniTask.WaitUntil(() => resultClosed);
         }
 
         public void CloseQuizPopup()
         {
-            if(_currentQuizPopup !=null)
+            if (_currentQuizPopup != null)
             {
                 _currentQuizPopup.Close();
             }
+        }
+
+        public void ShowRollPanel(Action onRoll)
+        {
+            _rollPanel.MoveIn(onRoll);
         }
     }
 }

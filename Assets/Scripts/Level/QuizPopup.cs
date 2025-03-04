@@ -17,7 +17,7 @@ namespace GeoGuessr.Presentation
         Action<Choice> _onChoiceSelected;
         DateTime _endTime;
 
-        public void Setup(Quiz quiz, DateTime endTime, Action<Choice> onChoiceSelected)
+        public void Setup(Quiz quiz, DateTime endTime, bool enableUserSelection, Action<Choice> onChoiceSelected)
         {
             _endTime = endTime;
             _onChoiceSelected = onChoiceSelected;
@@ -37,7 +37,7 @@ namespace GeoGuessr.Presentation
             for (int i = 0; i < quiz.Choices.Length; i++)
             {
                 var choice = quiz.Choices[i];
-                _choicePresenters[i].Setup(choice, onSelected: () =>
+                _choicePresenters[i].Setup(choice, enableUserSelection, onSelected: () =>
                 {
                     _onChoiceSelected.Invoke(choice); 
                     _onChoiceSelected = null;

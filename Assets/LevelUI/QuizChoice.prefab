@@ -52,6 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   choiceText: {fileID: 1202139345214724896}
+  button: {fileID: 6592241555068546805}
   choiceImage: {fileID: 8418639850410376253}
 --- !u!1 &1740364655055899807
 GameObject:
