@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 namespace GeoGuessr.Presentation
 {
-
     public class LevelViewAdapter : ILevelViewPort, IPlayerControllerViewPort
     {
         private readonly LevelWindow _levelWindow;
@@ -25,6 +24,7 @@ namespace GeoGuessr.Presentation
         }
         public async UniTask StartTurn(Player player)
         {
+            await UniTask.WaitForSeconds(1);
             var playerPresenter = _levelPresenter.GetPlayerPresenter(player);
 
             _followCamera.SetTarget(playerPresenter.transform);
@@ -32,22 +32,41 @@ namespace GeoGuessr.Presentation
             _followCamera.ClearTarget();
         }
 
-        public async UniTask MovePlayer(Player player, IReadOnlyList<BoardTile> path)
+        public IEnumerable<UniTask<BoardTile>> MovePlayer(Player player, IReadOnlyList<BoardTile> path)
         {
             var playerPresenter = _levelPresenter.GetPlayerPresenter(player);
 
             _followCamera.SetTarget(playerPresenter.transform);
-            await _levelWindow.SetupPlayerMovement(player, path);
 
-            foreach (var tile in path)
+            for (int i = 0; i < path.Count; i++)
             {
-                var tilePresenter = _levelPresenter.BoardPresenter.GetTilePresenter(tile);
-                await playerPresenter.MoveTo(tilePresenter);
+                int indexCapture = i;
+                yield return MovePlayerTo(indexCapture);
             }
 
-            _followCamera.ClearTarget();
+            async UniTask<BoardTile> MovePlayerTo(int tileIndex)
+            {
+                var tile = path[tileIndex];
+                if(tileIndex == 0)
+                {
+                    await _levelWindow.SetupPlayerMovement(player, path);
+                }
+
+                var tilePresenter = _levelPresenter.BoardPresenter.GetTilePresenter(tile);
+                await playerPresenter.MoveTo(tilePresenter);
+
+                if(tileIndex == path.Count - 1)
+                {
+                    _followCamera.ClearTarget();
+                }
+                return tile;
+            }
         }
 
+        public void UpdatePlayerScore(int score, int change)
+        {
+            _levelWindow.UpdatePlayerScore(score, change);
+        }
 
         public void CloseQuiz()
         {
@@ -93,5 +112,6 @@ namespace GeoGuessr.Presentation
             await UniTask.WaitUntil(() => resultIsClosed);
             return;
         }
+
     }
 }

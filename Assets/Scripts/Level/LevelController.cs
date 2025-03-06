@@ -12,7 +12,9 @@ namespace GeoGuessr.Game
     public interface ILevelViewPort
     {
         UniTask StartTurn(Player player);
-        UniTask MovePlayer(Player player, IReadOnlyList<BoardTile> path);
+        IEnumerable<UniTask<BoardTile>> MovePlayer(Player player, IReadOnlyList<BoardTile> path);
+
+        void UpdatePlayerScore(int score, int change);
         void CloseQuiz();
     }
 
@@ -106,6 +108,8 @@ namespace GeoGuessr.Game
 
     public class LevelController
     {
+        private readonly int EmptyTileScore = 500;
+        private readonly int QuizScore = 1000;
         private readonly static TimeSpan QuizDuration = TimeSpan.FromSeconds(10);
 
         public Board Board { get; }
@@ -158,7 +162,14 @@ namespace GeoGuessr.Game
         {
             var path = Board.DeterminRollPath(roll, CurrentPlayer);
             var lastTile = path[^1];
-            await ViewPort.MovePlayer(CurrentPlayer, path);
+            foreach(var tileMovement in ViewPort.MovePlayer(CurrentPlayer, path))
+            {
+                var boardTile = await tileMovement;
+                if (boardTile.QuizType == null)
+                {
+                    AddPlayerScore(EmptyTileScore);
+                }
+            }
             Board.SetPlayerTile(CurrentPlayer, lastTile);
 
         }
@@ -188,7 +199,7 @@ namespace GeoGuessr.Game
 
                 if (answerWasCorrect)
                 {
-                    CurrentPlayer.AddScore(1);
+                    AddPlayerScore(QuizScore);
                 }
 
                 await CurrentPlayer.Controller.ShowQuizResult(quiz, answerWasCorrect);
@@ -200,5 +211,10 @@ namespace GeoGuessr.Game
             }
         }
 
+        private void AddPlayerScore(int change)
+        {
+            CurrentPlayer.AddScore(change);
+            ViewPort.UpdatePlayerScore(CurrentPlayer.Score,change);
+        }
     }
 }

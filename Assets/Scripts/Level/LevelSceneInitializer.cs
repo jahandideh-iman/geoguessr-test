@@ -15,14 +15,14 @@ namespace GeoGuessr.Main
         [SerializeField] TextAsset _questionQuizesConfig;
         [SerializeField] LevelPresenter _levelPresenter;
         [SerializeField] LevelWindow _levelWindow;
-        [SerializeField] Camera _camera;
+        [SerializeField] Camera _uiCamera;
         [SerializeField] FollowCamera _followCamera;
 
         private LevelController _levelController;
         protected override void Init()
         {
             var uiManager = ServiceLocator.Find<UIManager>();
-            uiManager.SetMainCamera(_camera);
+            uiManager.SetMainCamera(_uiCamera);
             uiManager.SetMainWindow(_levelWindow);
 
             var boardDefinition = BoardJsonConfiguration.Load(_boardConfig.text);

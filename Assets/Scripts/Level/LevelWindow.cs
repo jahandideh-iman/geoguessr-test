@@ -12,6 +12,7 @@ namespace GeoGuessr.Presentation
     {
         [SerializeField] Announcement _announcement;
         [SerializeField] RollPanel _rollPanel;
+        [SerializeField] PlayerScorePresenter _playerScorePresenter;
         [SerializeField] List<SerializableDictionaryKeyValue<QuizType, QuizPopup>> _quizPopupPrefabs;
         [SerializeField] List<SerializableDictionaryKeyValue<QuizType, QuizResultPopup>> _quizResultPopupPrefabs;
 
@@ -30,6 +31,7 @@ namespace GeoGuessr.Presentation
 
         public async UniTask SetupPlayerTurn(Player player)
         {
+            _playerScorePresenter.Setup(player.Score);
             await _announcement.Announce($"{player.Name}'s turn");
         }
 
@@ -65,6 +67,11 @@ namespace GeoGuessr.Presentation
         public void ShowRollPanel(Action onRoll)
         {
             _rollPanel.MoveIn(onRoll);
+        }
+
+        internal void UpdatePlayerScore(int score, int change)
+        {
+            _playerScorePresenter.UpdateScore(score, change);
         }
     }
 }
