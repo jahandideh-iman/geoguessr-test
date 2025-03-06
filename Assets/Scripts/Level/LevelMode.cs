@@ -30,7 +30,7 @@ namespace GeoGuessr.Game
 
         public LevelMode AddAiPlayer()
         {
-            _aiPlayerNames.Add($"AiPlayer{_aiPlayerNames.Count}");
+            _aiPlayerNames.Add($"AiPlayer{_aiPlayerNames.Count + 1}");
             return this;
         }
 

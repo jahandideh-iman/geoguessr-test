@@ -273,7 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64d5c4a6eb8ad0646ad370e60bc4c563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followSpeed: 5
+  _followSpeed: 5
 --- !u!1 &334873369
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,6 +306,7 @@ MonoBehaviour:
   _boardPresenter: {fileID: 1252541111}
   _playerPresenterPrefab: {fileID: 8080054040560085239, guid: 3e7cb15866b2044c4821d261c3bfeeb2,
     type: 3}
+  _tileSize: 0.6
 --- !u!4 &334873371
 Transform:
   m_ObjectHideFlags: 0

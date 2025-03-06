@@ -1,4 +1,5 @@
 ﻿using GeoGuessr.Game;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,16 +16,18 @@ namespace GeoGuessr.Presentation
         List<SerializableDictionaryEntry<QuizType, BoardTilePresenter>> _quizTilePresenterPrefabs;
 
         List<BoardTilePresenter> _tilePresenters = new();
+        Func<BoardTile, Vector3> _tileWorldPositionGetter;
 
-        public void Setup(Board board)
+        public void Setup(Board board, Func<BoardTile, Vector3> tileWorldPositionGetter)
         {
+            _tileWorldPositionGetter = tileWorldPositionGetter;
             var tilePresenterPrefabByQuizType = _quizTilePresenterPrefabs.ToDictionary();
 
             foreach (var tile in board.Definition.BoardTiles)
             {
                 var tilePresenter = Instantiate(GetTilePresenterPrefab(tile), transform);
                 tilePresenter.Setup(tile);
-                tilePresenter.transform.localPosition = new Vector3(tile.X, 0, tile.Y);
+                tilePresenter.transform.position = _tileWorldPositionGetter(tile);
                 _tilePresenters.Add(tilePresenter);
             }
 
