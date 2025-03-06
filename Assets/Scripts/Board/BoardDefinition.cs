@@ -10,11 +10,13 @@ namespace GeoGuessr.Game
         public BoardTile[] BoardTiles { get; }
 
         public int StartingTileIndex { get; }
+        public string Name { get; }
 
-        public BoardDefinition(IEnumerable<BoardTile> boardTiles, int startingTileIndex)
+        public BoardDefinition(IEnumerable<BoardTile> boardTiles, int startingTileIndex, string name)
         {
             BoardTiles = boardTiles.ToArray();
             StartingTileIndex = startingTileIndex;
+            Name = name;
         }
     }
 }

@@ -538,7 +538,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -601,9 +601,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3133c983a7f32e543becc24f43446c09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingSceneName: Level
-  uiManager: {fileID: 1960279142}
-  objectsToKeepAlive:
+  _levelsAssets:
+  - {fileID: 4900000, guid: 7461d233759b23f4985ed0d68310df3a, type: 3}
+  - {fileID: 4900000, guid: 46b3a21028332ce47bd5fd0016a85918, type: 3}
+  _quizAssets:
+  - {fileID: 4900000, guid: 66588a69ef43e4ed288f156ecfd7e532, type: 3}
+  - {fileID: 4900000, guid: 952f70ada48f2445494217015362263b, type: 3}
+  _uiManager: {fileID: 1960279142}
+  _objectsToKeepAlive:
   - {fileID: 1960279137}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

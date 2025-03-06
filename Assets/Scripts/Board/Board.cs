@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace GeoGuessr.Game
 {
-
     public class Board
     {
         public BoardDefinition Definition { get; }

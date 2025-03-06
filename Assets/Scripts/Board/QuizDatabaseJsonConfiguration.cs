@@ -1,11 +1,10 @@
 ﻿using GeoGuessr.Game;
 using Newtonsoft.Json;
-using System;
 using System.Linq;
 
 namespace GeoGuessr.Configuration
 {
-    public class QuizDatabaseJsonConfiguration
+    public class QuizJsonConfiguration
     {
         [JsonObject]
         public struct Quiz
@@ -40,17 +39,9 @@ namespace GeoGuessr.Configuration
             }
         }
 
-        public static QuizDatabase Load(string flagQuizJson, string questionQuizJson)
+        public static Game.Quiz Load(string json)
         {
-            var flagQuiz = JsonConvert.DeserializeObject<Quiz>(flagQuizJson);
-            var questionQuiz = JsonConvert.DeserializeObject<Quiz>(questionQuizJson);
-
-            var database = new QuizDatabase();
-
-            database.AddQuiz(flagQuiz.ToGameModel());
-            database.AddQuiz(questionQuiz.ToGameModel());
-
-            return database;
+            return JsonConvert.DeserializeObject<Quiz>(json).ToGameModel();
         }
 
     }

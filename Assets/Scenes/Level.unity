@@ -881,21 +881,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 516770299408550688, guid: 41e4083c8e054d04facc826568dfe342,
-        type: 3}
-      propertyPath: m_VerticalAlignment
-      value: 512
-      objectReference: {fileID: 0}
-    - target: {fileID: 516770299408550688, guid: 41e4083c8e054d04facc826568dfe342,
-        type: 3}
-      propertyPath: m_HorizontalAlignment
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5467690541174687592, guid: 41e4083c8e054d04facc826568dfe342,
-        type: 3}
-      propertyPath: scoreChangeRate
-      value: 2000
-      objectReference: {fileID: 0}
     - target: {fileID: 5840330344301676082, guid: 41e4083c8e054d04facc826568dfe342,
         type: 3}
       propertyPath: m_Name
@@ -906,11 +891,6 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 671964761}
-    - target: {fileID: 6994676326393843202, guid: 41e4083c8e054d04facc826568dfe342,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 27.3
-      objectReference: {fileID: 0}
     - target: {fileID: 8183565088265125994, guid: 41e4083c8e054d04facc826568dfe342,
         type: 3}
       propertyPath: m_Pivot.x

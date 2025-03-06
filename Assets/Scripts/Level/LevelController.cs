@@ -1,4 +1,5 @@
 
+using Arman.Foundation.Core.ServiceLocating;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
@@ -18,25 +19,24 @@ namespace GeoGuessr.Game
         void CloseQuiz();
     }
 
-    public class QuizDatabase
+    public class QuizDatabase : Service
     {
         private Dictionary<QuizType, List<Quiz>> quizesByType = new();
 
-        public QuizDatabase()
+        public QuizDatabase(IEnumerable<Quiz> quizes)
         {
             foreach (var quizType in Enum.GetValues(typeof(QuizType)).Cast<QuizType>())
             {
                 quizesByType[quizType] = new List<Quiz>();
             }
 
+            foreach (var quiz in quizes)
+            {
+                quizesByType[quiz.Type].Add(quiz);
+            }
         }
 
-        public void AddQuiz(Quiz quiz)
-        {
-            quizesByType[quiz.Type].Add(quiz);
-        }
-
-        internal IReadOnlyList<Quiz> QuizesOfType(QuizType quizType)
+        public IReadOnlyList<Quiz> QuizesOfType(QuizType quizType)
         {
             return quizesByType[quizType];
         }

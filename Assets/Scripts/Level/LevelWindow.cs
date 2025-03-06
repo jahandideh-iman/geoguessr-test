@@ -16,8 +16,8 @@ namespace GeoGuessr.Presentation
         [SerializeField] List<SerializableDictionaryKeyValue<QuizType, QuizPopup>> _quizPopupPrefabs;
         [SerializeField] List<SerializableDictionaryKeyValue<QuizType, QuizResultPopup>> _quizResultPopupPrefabs;
 
-        private Dictionary<QuizType, QuizPopup> _quizPopupsPrefabsMap;
-        private Dictionary<QuizType, QuizResultPopup> _quizResultPopupsPrefabsMap;
+        private Dictionary<QuizType, QuizPopup> _quizPopupsPrefabsMap = null!;
+        private Dictionary<QuizType, QuizResultPopup> _quizResultPopupsPrefabsMap = null!;
 
 
         public void Setup(LevelController levelController)

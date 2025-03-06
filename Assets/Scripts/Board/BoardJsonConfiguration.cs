@@ -16,6 +16,7 @@ namespace GeoGuessr.Configuration
             [JsonProperty] public int startingTileIndex;
             [JsonProperty] public int[] questionQuizTiles;
             [JsonProperty] public int[] flagQuizTiles;
+            [JsonProperty] public string name;
         }
 
         [JsonObject]
@@ -34,7 +35,7 @@ namespace GeoGuessr.Configuration
                 int[] tile = boardConfig.tiles[i];
                 boardTiles.Add(new BoardTile(tile[0], tile[1], i, QuizTypeForTile(boardConfig, i)));
             }
-            return new BoardDefinition(boardTiles, boardConfig.startingTileIndex);
+            return new BoardDefinition(boardTiles, boardConfig.startingTileIndex, boardConfig.name);
         }
 
         private static QuizType? QuizTypeForTile(Board boardConfig, int i)
