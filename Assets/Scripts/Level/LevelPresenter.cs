@@ -1,5 +1,4 @@
 ﻿using GeoGuessr.Game;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,9 +10,7 @@ namespace GeoGuessr.Presentation
         [SerializeField] PlayerPresenter _playerPresenterPrefab;
 
         public BoardPresenter BoardPresenter => _boardPresenter;
-
-
-        private Dictionary<Player, PlayerPresenter> _playerPresenters = new();   
+        private Dictionary<Player, PlayerPresenter> _playerPresenters = new();
 
         public void Setup(LevelController levelController)
         {
@@ -25,10 +22,9 @@ namespace GeoGuessr.Presentation
                 playerPresenter.Setup(player, levelController.Board.GetPlayerTile(player));
                 _playerPresenters.Add(player, playerPresenter);
             }
-
         }
 
-        internal PlayerPresenter GetPlayerPresenter(Player player)
+        public PlayerPresenter GetPlayerPresenter(Player player)
         {
             return _playerPresenters[player];
         }

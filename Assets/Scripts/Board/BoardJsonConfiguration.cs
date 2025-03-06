@@ -8,7 +8,6 @@ namespace GeoGuessr.Configuration
 {
     public class BoardJsonConfiguration
     {
-
         [JsonObject]
         public struct Board
         {
@@ -40,11 +39,11 @@ namespace GeoGuessr.Configuration
 
         private static QuizType? QuizTypeForTile(Board boardConfig, int i)
         {
-            if(boardConfig.questionQuizTiles != null && boardConfig.questionQuizTiles.Contains(i))
+            if (boardConfig.questionQuizTiles != null && boardConfig.questionQuizTiles.Contains(i))
             {
                 return QuizType.Question;
             }
-            else if(boardConfig.flagQuizTiles != null && boardConfig.flagQuizTiles.Contains(i))
+            else if (boardConfig.flagQuizTiles != null && boardConfig.flagQuizTiles.Contains(i))
             {
                 return QuizType.Flag;
             }

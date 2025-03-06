@@ -1,4 +1,5 @@
-﻿using Arman.UIManagement;
+﻿#nullable enable
+using Arman.UIManagement;
 using GeoGuessr.Game;
 using System;
 using TMPro;
@@ -9,10 +10,10 @@ namespace GeoGuessr.Presentation
 {
     public class QuizResultPopup : PopupWindow
     {
-        [SerializeField] TextMeshProUGUI _resultText;
-        [SerializeField] TextMeshProUGUI _answerText;
-        [SerializeField] Image _answerImage;
-        [SerializeField] Button _closeButton;
+        [SerializeField] TextMeshProUGUI _resultText = null!;
+        [SerializeField] TextMeshProUGUI _answerText = null!;
+        [SerializeField] Image _answerImage = null!;
+        [SerializeField] Button _closeButton = null!;
 
         Action? _onClosed;
 

@@ -29,9 +29,11 @@ namespace GeoGuessr.Presentation
             _text.text = message;
             _rectTransform.anchoredPosition = _initialPosition + (Vector2.left * _outOfScreenOffset);
             Sequence mySequence = DOTween.Sequence();
-            mySequence.Append(_rectTransform.DOAnchorPos(_initialPosition, 1));
+            mySequence.Append(
+                _rectTransform.DOAnchorPos(_initialPosition, 1));
             mySequence.AppendInterval(0.5f);
-            mySequence.Append(_rectTransform.DOAnchorPos(_initialPosition + (Vector2.right * _outOfScreenOffset), 1));
+            mySequence.Append(
+                _rectTransform.DOAnchorPos(_initialPosition + (Vector2.right * _outOfScreenOffset), 1));
 
             await mySequence.AsyncWaitForCompletion().AsUniTask();
             gameObject.SetActive(false);

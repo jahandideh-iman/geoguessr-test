@@ -1,14 +1,12 @@
-﻿
-using Arman.Foundation.Core.ServiceLocating;
+﻿using Arman.Foundation.Core.ServiceLocating;
 using Arman.SceneMangement;
 using Arman.UIManagement;
 using GeoGuessr.Game;
 using GeoGuessr.Presentation;
 using UnityEngine;
 
-namespace BalloonPop.Main
+namespace GeoGuessr.Main
 {
-
     public class MainMenuSceneInitializer : SceneInitilizer
     {
         [SerializeField] MainMenuWindow _mainMenuWindow;
@@ -20,9 +18,8 @@ namespace BalloonPop.Main
             uiManager.SetMainCamera(_uiCamera);
             uiManager.SetMainWindow(_mainMenuWindow);
 
-
             _mainMenuWindow.Setup(
-                ServiceLocator.Find<BoardsDatabase>(),
+                ServiceLocator.Find<BoardDatabase>(),
                 ServiceLocator.Find<GameTransitionManager>());
         }
     }

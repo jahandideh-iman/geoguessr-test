@@ -25,9 +25,9 @@ namespace GeoGuessr.Presentation
 
         public void Update()
         {
-            if(_currentScore < _targetScore)
+            if (_currentScore < _targetScore)
             {
-                _currentScore = (int) Mathf.Min(_targetScore, _currentScore + Time.deltaTime *  scoreChangeRate);
+                _currentScore = (int)Mathf.Min(_targetScore, _currentScore + Time.deltaTime * scoreChangeRate);
                 _scoreText.text = _currentScore.ToString();
             }
         }

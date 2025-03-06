@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static GeoGuessr.Presentation.SerializableDictionaryUtilities;
+using static GeoGuessr.Utilities.SerializableDictionaryUtilities;
 
 namespace GeoGuessr.Presentation
 {
-
     public class BoardPresenter : MonoBehaviour
     {
         [SerializeField]
         BoardTilePresenter _emptyTilePresenterPrefab;
 
-        [SerializeField] 
-        List<SerializableDictionaryKeyValue<QuizType, BoardTilePresenter>> _quizTilePresenterPrefabs;
+        [SerializeField]
+        List<SerializableDictionaryEntry<QuizType, BoardTilePresenter>> _quizTilePresenterPrefabs;
 
         List<BoardTilePresenter> _tilePresenters = new();
 
@@ -31,17 +30,16 @@ namespace GeoGuessr.Presentation
 
             BoardTilePresenter GetTilePresenterPrefab(BoardTile tile)
             {
-                if(tile.QuizType == null)
+                if (tile.QuizType == null)
                 {
                     return _emptyTilePresenterPrefab;
                 }
 
                 return tilePresenterPrefabByQuizType[tile.QuizType.Value];
-
             }
         }
 
-        internal BoardTilePresenter GetTilePresenter(BoardTile tile)
+        public BoardTilePresenter GetTilePresenter(BoardTile tile)
         {
             return _tilePresenters[tile.Index];
         }

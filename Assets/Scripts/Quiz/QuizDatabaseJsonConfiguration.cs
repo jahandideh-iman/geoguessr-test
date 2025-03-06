@@ -1,4 +1,5 @@
-﻿using GeoGuessr.Game;
+﻿#nullable enable
+using GeoGuessr.Game;
 using Newtonsoft.Json;
 using System.Linq;
 

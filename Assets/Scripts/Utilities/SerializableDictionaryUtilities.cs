@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GeoGuessr.Presentation
+namespace GeoGuessr.Utilities
 {
     public static class SerializableDictionaryUtilities
     {
         [Serializable]
-        public struct SerializableDictionaryKeyValue<TKey, TValue>
+        public struct SerializableDictionaryEntry<TKey, TValue>
         {
             public TKey Key;
             public TValue Value;
         }
 
-        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<SerializableDictionaryKeyValue<TKey, TValue>> keyValues)
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<SerializableDictionaryEntry<TKey, TValue>> keyValues)
         {
             return Enumerable.ToDictionary(
                 keyValues,

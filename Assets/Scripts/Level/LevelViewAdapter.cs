@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿#nullable enable
+using Cysharp.Threading.Tasks;
 using GeoGuessr.Game;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace GeoGuessr.Presentation
             _levelPresenter = levelPresenter;
             _followCamera = followCamera;
         }
+
         public async UniTask StartTurn(Player player)
         {
             await UniTask.WaitForSeconds(1);
@@ -47,7 +49,7 @@ namespace GeoGuessr.Presentation
             async UniTask<BoardTile> MovePlayerTo(int tileIndex)
             {
                 var tile = path[tileIndex];
-                if(tileIndex == 0)
+                if (tileIndex == 0)
                 {
                     await _levelWindow.SetupPlayerMovement(player, path);
                 }
@@ -55,7 +57,7 @@ namespace GeoGuessr.Presentation
                 var tilePresenter = _levelPresenter.BoardPresenter.GetTilePresenter(tile);
                 await playerPresenter.MoveTo(tilePresenter);
 
-                if(tileIndex == path.Count - 1)
+                if (tileIndex == path.Count - 1)
                 {
                     _followCamera.ClearTarget();
                 }
@@ -70,7 +72,7 @@ namespace GeoGuessr.Presentation
 
         public void CloseQuiz()
         {
-            _currentQuizPopup.Close();
+            _currentQuizPopup?.Close();
             _currentQuizPopup = null;
         }
 
@@ -102,7 +104,7 @@ namespace GeoGuessr.Presentation
             _currentQuizPopup = _levelWindow.ShowQuizPopup(quiz, endTime, enableUserChoice: true, onChoiceSelected: choice => selectedChoice = choice);
             await UniTask.WaitUntil(() => selectedChoice != null);
             _currentQuizPopup?.Close();
-            return selectedChoice;
+            return selectedChoice!;
         }
 
         public async UniTask ShowPlayerQuizResult(Quiz quiz, bool answerWasCorrect)
@@ -112,6 +114,5 @@ namespace GeoGuessr.Presentation
             await UniTask.WaitUntil(() => resultIsClosed);
             return;
         }
-
     }
 }

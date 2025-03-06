@@ -1,20 +1,8 @@
-﻿using Arman.Foundation.Core.ServiceLocating;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿#nullable enable
+using Arman.Foundation.Core.ServiceLocating;
 
 namespace GeoGuessr.Game
 {
-    public class BoardsDatabase : Service
-    {
-        public BoardDefinition[] BoardDefinitions { get; }
-        public BoardsDatabase(IEnumerable<BoardDefinition> boardDefinition) {
-
-            BoardDefinitions = boardDefinition.ToArray();
-        }
-
-
-    }
     public class GameTransitionManager : Service
     {
         private const string MainMenuScene = "MainMenu";
@@ -25,7 +13,6 @@ namespace GeoGuessr.Game
         public void GoToMainMenu()
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene(MainMenuScene);
-
         }
 
         public void GoToLevel(LevelMode levelMode)
@@ -33,6 +20,5 @@ namespace GeoGuessr.Game
             RequestionLevelMode = levelMode;
             UnityEngine.SceneManagement.SceneManager.LoadScene(LevelScene);
         }
-
     }
 }

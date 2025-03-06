@@ -1,7 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using GeoGuessr.Game;
-using System;
 using UnityEngine;
 
 namespace GeoGuessr.Presentation
@@ -13,9 +12,12 @@ namespace GeoGuessr.Presentation
             transform.localPosition = PositionFromTile(tile);
         }
 
-        internal UniTask MoveTo(BoardTilePresenter tilePresenter)
+        public UniTask MoveTo(BoardTilePresenter tilePresenter)
         {
-            return transform.DOLocalMove(PositionFromTile(tilePresenter.Tile), 0.5f).AsyncWaitForCompletion().AsUniTask();
+            return transform
+                .DOLocalMove(PositionFromTile(tilePresenter.Tile), 0.5f)
+                .AsyncWaitForCompletion()
+                .AsUniTask();
         }
 
         Vector3 PositionFromTile(BoardTile tile)

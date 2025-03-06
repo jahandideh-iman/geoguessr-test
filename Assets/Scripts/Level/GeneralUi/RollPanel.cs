@@ -1,27 +1,26 @@
-﻿using DG.Tweening;
+﻿#nullable enable
+using DG.Tweening;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GeoGuessr.Presentation
 {
-
     public class RollPanel : MonoBehaviour
     {
         [SerializeField] Vector2 _outOfScreenPositionOffset;
-        [SerializeField] Button _button;
+        [SerializeField] Button _button = null!;
 
         Vector2 _initialPosition;
         Action? _onRoll;
-        RectTransform _rectTransform;
+        RectTransform _rectTransform = null!;
 
         public void Setup()
         {
-            _rectTransform = (transform as RectTransform);
+            _rectTransform = (transform as RectTransform)!;
             _initialPosition = _rectTransform.anchoredPosition;
             _rectTransform.anchoredPosition = _initialPosition + _outOfScreenPositionOffset;
             _button.interactable = false;
-
         }
 
         public void OnRoll()

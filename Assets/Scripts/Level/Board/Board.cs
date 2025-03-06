@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace GeoGuessr.Game
 {
     public class Board
     {
         public BoardDefinition Definition { get; }
-
         Dictionary<Player, int> PlayerPositions { get; } = new();
 
         public Board(BoardDefinition definition, Player[] players)
@@ -17,7 +15,6 @@ namespace GeoGuessr.Game
             {
                 PlayerPositions[player] = definition.StartingTileIndex;
             }
-
         }
 
         public List<BoardTile> DeterminRollPath(int steps, Player player)

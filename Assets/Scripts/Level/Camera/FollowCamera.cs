@@ -1,4 +1,4 @@
-﻿using System;
+﻿#nullable enable
 using UnityEngine;
 
 namespace GeoGuessr.Presentation
@@ -6,7 +6,7 @@ namespace GeoGuessr.Presentation
     public class FollowCamera : MonoBehaviour
     {
         private Vector3 _offset;
-        public float followSpeed = 5f;
+        public float _followSpeed = 5f;
 
         private Transform? _target;
 
@@ -32,12 +32,9 @@ namespace GeoGuessr.Presentation
                 return;
             }
 
-            // Compute the desired position
             Vector3 desiredPosition = _target.position + Quaternion.Euler(0, _target.eulerAngles.y, 0) * _offset;
 
-            // Smoothly move the camera to the desired position
-            transform.position = Vector3.Lerp(transform.position, desiredPosition, followSpeed * Time.deltaTime);
-
+            transform.position = Vector3.Lerp(transform.position, desiredPosition, _followSpeed * Time.deltaTime);
         }
     }
 }

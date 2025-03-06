@@ -1,11 +1,9 @@
 ﻿using Arman.UIManagement;
 using GeoGuessr.Game;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace GeoGuessr.Presentation
 {
@@ -15,12 +13,12 @@ namespace GeoGuessr.Presentation
         [SerializeField] TMP_Dropdown _playModeDropDown;
 
         private GameTransitionManager _transitionManager;
-        private BoardsDatabase _boardsDatabase;
+        private BoardDatabase _boardsDatabase;
 
 
-        public void Setup(BoardsDatabase boardsDatabase ,GameTransitionManager transitionManager)
+        public void Setup(BoardDatabase boardsDatabase, GameTransitionManager transitionManager)
         {
-            _transitionManager = transitionManager; 
+            _transitionManager = transitionManager;
             _boardsDatabase = boardsDatabase;
 
             _levelsDropDown.ClearOptions();
@@ -28,19 +26,17 @@ namespace GeoGuessr.Presentation
             _levelsDropDown.value = 0;
 
             _playModeDropDown.ClearOptions();
-            _playModeDropDown.AddOptions(new List<string> { "Single Player", "Two Players", "Player vs AI" } );
+            _playModeDropDown.AddOptions(new List<string> { "Single Player", "Two Players", "Player vs AI" });
             _playModeDropDown.value = 0;
         }
 
-
         public void StartLevel()
         {
-            
             var levelMode = new LevelMode();
 
             levelMode.SetBoard(_boardsDatabase.BoardDefinitions[_levelsDropDown.value]);
 
-            switch(_playModeDropDown.value)
+            switch (_playModeDropDown.value)
             {
                 case 0:
                     levelMode.AddLocalPlayer("Player");

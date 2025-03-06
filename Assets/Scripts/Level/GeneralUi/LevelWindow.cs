@@ -1,25 +1,26 @@
-﻿using Arman.UIManagement;
+﻿#nullable enable
+using Arman.UIManagement;
 using Cysharp.Threading.Tasks;
 using GeoGuessr.Game;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static GeoGuessr.Presentation.SerializableDictionaryUtilities;
+using static GeoGuessr.Utilities.SerializableDictionaryUtilities;
 
 namespace GeoGuessr.Presentation
 {
     public class LevelWindow : MainWindow
     {
-        [SerializeField] Announcement _announcement;
-        [SerializeField] RollPanel _rollPanel;
-        [SerializeField] PlayerScorePresenter _playerScorePresenter;
-        [SerializeField] List<SerializableDictionaryKeyValue<QuizType, QuizPopup>> _quizPopupPrefabs;
-        [SerializeField] List<SerializableDictionaryKeyValue<QuizType, QuizResultPopup>> _quizResultPopupPrefabs;
+        [SerializeField] Announcement _announcement = null!;
+        [SerializeField] RollPanel _rollPanel = null!;
+        [SerializeField] PlayerScorePresenter _playerScorePresenter = null!;
+        [SerializeField] List<SerializableDictionaryEntry<QuizType, QuizPopup>> _quizPopupPrefabs = null!;
+        [SerializeField] List<SerializableDictionaryEntry<QuizType, QuizResultPopup>> _quizResultPopupPrefabs = null!;
 
         private Dictionary<QuizType, QuizPopup> _quizPopupsPrefabsMap = null!;
         private Dictionary<QuizType, QuizResultPopup> _quizResultPopupsPrefabsMap = null!;
 
-        private GameTransitionManager _gameTransitionManager;
+        private GameTransitionManager _gameTransitionManager = null!;
 
         public void Setup(GameTransitionManager gameTransitionManager)
         {
@@ -44,7 +45,8 @@ namespace GeoGuessr.Presentation
             await _announcement.Announce($"{player.Name} rolled {path.Count}");
         }
 
-        public QuizPopup ShowQuizPopup(Quiz quiz, DateTime endTime, bool enableUserChoice, Action<Choice>? onChoiceSelected)
+        public QuizPopup ShowQuizPopup(
+            Quiz quiz, DateTime endTime, bool enableUserChoice, Action<Choice>? onChoiceSelected)
         {
             var prefab = _quizPopupsPrefabsMap[quiz.Type];
 
@@ -58,7 +60,8 @@ namespace GeoGuessr.Presentation
             return popup;
         }
 
-        public QuizResultPopup ShowQuizResultPopup(Quiz quiz, bool answerWasCorrect, bool enableUserInput, Action? onClosed = null)
+        public QuizResultPopup ShowQuizResultPopup(
+            Quiz quiz, bool answerWasCorrect, bool enableUserInput, Action? onClosed = null)
         {
             var prefab = _quizResultPopupsPrefabsMap[quiz.Type];
             var popup = Instantiate(prefab, uiManager.MainTransform());

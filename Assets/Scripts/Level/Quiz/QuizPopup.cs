@@ -22,8 +22,8 @@ namespace GeoGuessr.Presentation
             _endTime = endTime;
             _onChoiceSelected = onChoiceSelected;
             _questionText.text = quiz.Question;
-            
-            if (quiz.CustomImageID != null )
+
+            if (quiz.CustomImageID != null)
             {
                 _questionImage.sprite = Resources.Load<Sprite>(quiz.CustomImageID);
                 _questionImage.gameObject.SetActive(true);
@@ -40,7 +40,7 @@ namespace GeoGuessr.Presentation
                 var choice = quiz.Choices[i];
                 _choicePresenters[i].Setup(choice, enableUserSelection, onSelected: () =>
                 {
-                    _onChoiceSelected.Invoke(choice); 
+                    _onChoiceSelected.Invoke(choice);
                     _onChoiceSelected = null;
                 });
             }

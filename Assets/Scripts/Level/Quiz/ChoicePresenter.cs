@@ -1,19 +1,19 @@
-﻿using GeoGuessr.Game;
+﻿#nullable enable
+using GeoGuessr.Game;
 using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static GeoGuessr.Configuration.QuizJsonConfiguration;
 
 namespace GeoGuessr.Presentation
 {
     public class ChoicePresenter : MonoBehaviour
     {
-        [SerializeField] TextMeshProUGUI _choiceText;
-        [SerializeField] Button _button;
-        [SerializeField] Image _choiceImage;
+        [SerializeField] TextMeshProUGUI _choiceText = null!;
+        [SerializeField] Button _button = null!;
+        [SerializeField] Image _choiceImage = null!;
 
-        private Action? _onSelected;
+        private Action? _onSelected = null;
 
         public void Setup(Choice choice, bool enableUserSelection, Action? onSelected)
         {
@@ -42,7 +42,6 @@ namespace GeoGuessr.Presentation
             {
                 _choiceImage.gameObject.SetActive(false);
             }
-
         }
 
         public void OnSelected()
