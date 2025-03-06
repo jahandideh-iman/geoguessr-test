@@ -3,14 +3,15 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static GeoGuessr.Configuration.QuizJsonConfiguration;
 
 namespace GeoGuessr.Presentation
 {
     public class ChoicePresenter : MonoBehaviour
     {
-        [SerializeField] TextMeshProUGUI choiceText;
-        [SerializeField] Button button;
-        [SerializeField] Image choiceImage;
+        [SerializeField] TextMeshProUGUI _choiceText;
+        [SerializeField] Button _button;
+        [SerializeField] Image _choiceImage;
 
         private Action? _onSelected;
 
@@ -21,24 +22,25 @@ namespace GeoGuessr.Presentation
                 _onSelected = onSelected;
             }
 
-            button.interactable = enableUserSelection;
+            _button.interactable = enableUserSelection;
 
             if (choice.Text != null)
             {
-                choiceText.text = choice.Text;
+                _choiceText.text = choice.Text;
             }
             else
             {
-                choiceText.gameObject.SetActive(false);
+                _choiceText.gameObject.SetActive(false);
             }
 
             if (choice.ImageID != null)
             {
-
+                _choiceImage.sprite = Resources.Load<Sprite>(choice.ImageID);
+                _choiceImage.gameObject.SetActive(true);
             }
             else
             {
-                choiceImage.gameObject.SetActive(false);
+                _choiceImage.gameObject.SetActive(false);
             }
 
         }

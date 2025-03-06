@@ -109,7 +109,7 @@ namespace GeoGuessr.Game
     public class LevelController
     {
         private readonly int EmptyTileScore = 500;
-        private readonly int QuizScore = 1000;
+        private readonly int QuizScore = 5000;
         private readonly static TimeSpan QuizDuration = TimeSpan.FromSeconds(10);
 
         public Board Board { get; }

@@ -64,6 +64,7 @@ namespace GeoGuessr.Game
         public async UniTask<int> GetRoll()
         {
             await _viewPort.ShowRollingOption();
+            return 1;
             return UnityEngine.Random.Range(1, MaxDiceRoll+1);
         }
 

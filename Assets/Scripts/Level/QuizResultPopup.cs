@@ -26,6 +26,8 @@ namespace GeoGuessr.Presentation
 
             if (quiz.Answer.ImageID != null)
             {
+                _answerImage.sprite = Resources.Load<Sprite>(quiz.Answer.ImageID);
+                _answerImage.gameObject.SetActive(true);
             }
             else
             {

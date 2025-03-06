@@ -35,7 +35,7 @@ namespace GeoGuessr.Main
                 viewAdapter);
 
             _levelPresenter.Setup(_levelController);
-            _levelWindow.Setup(_levelController);
+            _levelWindow.Setup(gameTransitionManager);
 
             _levelController.Start();
 

@@ -481,10 +481,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d18aaa12abe9e340844dfe1da03ee40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _boardConfig: {fileID: 4900000, guid: 7461d233759b23f4985ed0d68310df3a, type: 3}
-  _flagQuizesConfig: {fileID: 4900000, guid: 66588a69ef43e4ed288f156ecfd7e532, type: 3}
-  _questionQuizesConfig: {fileID: 4900000, guid: 952f70ada48f2445494217015362263b,
-    type: 3}
   _levelPresenter: {fileID: 334873370}
   _levelWindow: {fileID: 408159249}
   _uiCamera: {fileID: 671964761}

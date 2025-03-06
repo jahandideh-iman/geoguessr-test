@@ -5,21 +5,22 @@ using UnityEngine.UI;
 
 namespace GeoGuessr.Presentation
 {
+
     public class RollPanel : MonoBehaviour
     {
-        [SerializeField] Button button;
+        [SerializeField] Vector2 _outOfScreenPositionOffset;
+        [SerializeField] Button _button;
 
-
-        Vector2 initialPosition;
-        Vector2 outOfScreenPositionOffset = new Vector2 (200, -200);
-
+        Vector2 _initialPosition;
         Action? _onRoll;
+        RectTransform _rectTransform;
 
         public void Setup()
         {
-            initialPosition = transform.localPosition;
-            transform.localPosition = initialPosition + outOfScreenPositionOffset;
-            button.interactable = false;
+            _rectTransform = (transform as RectTransform);
+            _initialPosition = _rectTransform.anchoredPosition;
+            _rectTransform.anchoredPosition = _initialPosition + _outOfScreenPositionOffset;
+            _button.interactable = false;
 
         }
 
@@ -32,14 +33,14 @@ namespace GeoGuessr.Presentation
         public void MoveIn(Action onRoll)
         {
             _onRoll = onRoll;
-            button.interactable = true;
-            transform.DOLocalMove(initialPosition, 0.5f);
+            _button.interactable = true;
+            _rectTransform.DOAnchorPos(_initialPosition, 0.5f);
         }
 
         public void MoveOut()
         {
-            button.interactable = false;
-            transform.DOLocalMove(initialPosition + outOfScreenPositionOffset, 0.5f);
+            _button.interactable = false;
+            _rectTransform.DOAnchorPos(_initialPosition + _outOfScreenPositionOffset, 0.5f);
         }
     }
 }

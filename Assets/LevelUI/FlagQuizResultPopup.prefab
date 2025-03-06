@@ -8,10 +8,37 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1564069249594023016, guid: e36031d79b7cf064282165722f00277b,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c3950acd4d84e47b6baa16c99716bc1b,
+        type: 3}
+    - target: {fileID: 1564069249594023016, guid: e36031d79b7cf064282165722f00277b,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564069249594023016, guid: e36031d79b7cf064282165722f00277b,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564069249594023016, guid: e36031d79b7cf064282165722f00277b,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2553335538152280023, guid: e36031d79b7cf064282165722f00277b,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: fe3cf972f5fd148e4b761b76e9637aa4,
+        type: 3}
     - target: {fileID: 4102052483928774007, guid: e36031d79b7cf064282165722f00277b,
         type: 3}
       propertyPath: m_Name
-      value: QuizResultPopup
+      value: FlagQuizResultPopup
       objectReference: {fileID: 0}
     - target: {fileID: 4901313906347618011, guid: e36031d79b7cf064282165722f00277b,
         type: 3}
@@ -112,6 +139,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6193902098968539980, guid: e36031d79b7cf064282165722f00277b,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6193902098968539980, guid: e36031d79b7cf064282165722f00277b,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6193902098968539980, guid: e36031d79b7cf064282165722f00277b,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.63529414
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

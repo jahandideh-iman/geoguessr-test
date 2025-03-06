@@ -19,14 +19,17 @@ namespace GeoGuessr.Presentation
         private Dictionary<QuizType, QuizPopup> _quizPopupsPrefabsMap = null!;
         private Dictionary<QuizType, QuizResultPopup> _quizResultPopupsPrefabsMap = null!;
 
+        private GameTransitionManager _gameTransitionManager;
 
-        public void Setup(LevelController levelController)
+        public void Setup(GameTransitionManager gameTransitionManager)
         {
+            _gameTransitionManager = gameTransitionManager;
             _quizPopupsPrefabsMap = _quizPopupPrefabs.ToDictionary();
             _quizResultPopupsPrefabsMap = _quizResultPopupPrefabs.ToDictionary();
 
             _announcement.Setup();
             _rollPanel.Setup();
+            _playerScorePresenter.Setup(0);
         }
 
         public async UniTask SetupPlayerTurn(Player player)
@@ -69,9 +72,14 @@ namespace GeoGuessr.Presentation
             _rollPanel.MoveIn(onRoll);
         }
 
-        internal void UpdatePlayerScore(int score, int change)
+        public void UpdatePlayerScore(int score, int change)
         {
             _playerScorePresenter.UpdateScore(score, change);
+        }
+
+        public void ExitLevel()
+        {
+            _gameTransitionManager.GoToMainMenu();
         }
     }
 }
